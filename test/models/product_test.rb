@@ -20,28 +20,31 @@ class ProductTest < ActiveSupport::TestCase
     puts "=============="
     puts product.errors[:price]
     assert_equal ["must be greater than or equal to 0.01"], product.errors[:price] 
-
     product.price = 1
+    puts product.errors[:title]
+    puts product.errors[:image_url]
+    
     assert product.valid?
   end
 
   test "product title should be unique" do
-  	product = Product.new(title: "Good enough MyString New", description: "desc", image_url: "url")
+  	product = Product.new(title: "My Own String", description: "desc", image_url: "url", price: 2)
   	assert product.invalid?
-
-  	assert product.errors[:title].any?
+    puts "Title:#{product.errors[:title]}"
+    puts "Price:#{product.errors[:price]}"
+    assert product.errors[:title].any?
   	puts product.errors[:title]
 
   	assert_equal ["has already been taken"], product.errors[:title]
   end
 
   test "product title should be having atleast 10 characters" do
-    product = Product.new(title: "Sony TV", description: "desc", image_url: "url")
+    product = Product.new(title: "Sony TV", description: "desc", image_url: "url", price: 4)
     assert product.invalid?
     assert product.errors[:title].any?
     puts product.errors[:title]
 
-    product = Product.new(title: "Good Sony TV", description: "desc", image_url: "url")
+    product = Product.new(title: "Good Sony TV", description: "desc", image_url: "url", price: 3)
     assert product.valid?
   
   end
